@@ -1,11 +1,14 @@
 import java.util.Scanner;
 
 // NSC - Number System Converter
-// v0.1 DecToAny
+// v0.2 AnyToDec
 //
 // Converts decimal numbers to binary, octal and  hexal representation.
 // Additionally u could convert to a free-to-choose system up to 36.
 // To do so, change the 'vBase'-variable.
+// v0.2 - Changes:
+// - Converts numbers of a chooseable number system to decimal representation.
+// - output "-1" indicates an input error (only within anyToDec())
 public class NSC {
 	
 	// vBase - variable Base
@@ -23,21 +26,50 @@ public class NSC {
 		// declarations
 		Scanner sc = new Scanner(System.in);
 		int number = 0;
+		String numberStr = "";
+		int srcBase = 0;
 		
-		// input
+		// input 1
 		System.out.println("");
-		System.out.println("NSC - Number System Converter");
+		System.out.println("NSC - Number System Converter (Part 1)");
 		System.out.println("Converts decimal numbers to other number systems.");
 		System.out.println("");
-		System.out.print("[Dec] : ");
+		System.out.print("Number: ");
 		number = sc.nextInt();
 		
-		// output
+		// output 1
 		System.out.println("Binary: " + decToBin(number));
 		System.out.println("Octal : " + decToOct(number));
 		System.out.println("Hexal : " + decToHex(number));
-		System.out.println(vBase + "'er : " + decToVBase(number, vBase));
+		System.out.println(vBase + "'er : " + decToAny(number, vBase));
 		System.out.println("");
+		
+		// input 2
+		System.out.println("NSC - Number System Converter (Part 2)");
+		System.out.println("Converts numbers from a chooseable number system to decimal.");
+		System.out.println("");
+		System.out.print("Number : ");
+		numberStr = sc.next();
+		System.out.print("[base] : ");
+		srcBase = sc.nextInt();
+		
+		// output 2
+		System.out.println("Decimal: " + anyToDec(numberStr, srcBase));
+		
+	}
+	
+	public static String anyToDec(String n, int sourceBase) {
+		char[] chNumber = n.toCharArray();
+		int result = 0;
+		int digit = 0;
+		for (int i=0; i<chNumber.length; i++) {
+			if ((digit = Character.getNumericValue(chNumber[i])) >= sourceBase) {
+				result = -1;
+				break;
+			}
+			result += digit * Math.pow(sourceBase, chNumber.length-1-i);
+		}
+		return String.valueOf(result);
 	}
 	
 	public static String decToBin(int n){
@@ -64,26 +96,14 @@ public class NSC {
 		return result;
 	}
 	
-	// decToVBase - decimalToVariableBase
 	// Note: method works up to a maximum base of 36, otherwise method will be
 	// undefined or exit by error
-	public static String decToVBase (int n, int base) {
+	public static String decToAny (int n, int targetBase) {
 		String result = "";
-		for (int i=n; i>0; i=i/base) {
-			result = symbols[i%base] + result;
+		for (int i=n; i>0; i=i/targetBase) {
+			result = symbols[i%targetBase] + result;
 		}
 		return result;
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
