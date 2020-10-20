@@ -21,8 +21,7 @@ public class NSC {
 	 "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", 
 	 "U", "V", "W", "X", "Y", "Z"};
 	 
-	public static void main (String[] args){
-		
+	public static void main (String[] args){	
 		// declarations
 		Scanner sc = new Scanner(System.in);
 		int number = 0;
@@ -38,9 +37,9 @@ public class NSC {
 		number = sc.nextInt();
 		
 		// output 1
-		System.out.println("Binary: " + decToBin(number));
-		System.out.println("Octal : " + decToOct(number));
-		System.out.println("Hexal : " + decToHex(number));
+		System.out.println("Binary: " + decToAny(number, 2));
+		System.out.println("Octal : " + decToAny(number, 8));
+		System.out.println("Hexal : " + decToAny(number, 16));
 		System.out.println(vBase + "'er : " + decToAny(number, vBase));
 		System.out.println("");
 		
@@ -54,8 +53,7 @@ public class NSC {
 		srcBase = sc.nextInt();
 		
 		// output 2
-		System.out.println("Decimal: " + anyToDec(numberStr, srcBase));
-		
+		System.out.println("Decimal: " + anyToDec(numberStr, srcBase));	
 	}
 	
 	public static String anyToDec(String n, int sourceBase) {
@@ -70,30 +68,6 @@ public class NSC {
 			result += digit * Math.pow(sourceBase, chNumber.length-1-i);
 		}
 		return String.valueOf(result);
-	}
-	
-	public static String decToBin(int n){
-		String result = "";
-		for (int i=n; i>0; i=i/2) {
-			result = Integer.toString(i%2) + result;
-		}
-		return result;
-	}
-	
-	public static String decToOct(int n) {
-		String result = "";
-		for (int i=n; i>0; i=i/8) {
-			result = Integer.toString(i%8) + result;
-		}
-		return result;
-	}
-	
-	public static String decToHex(int n) {
-		String result = "";
-		for (int i=n; i>0; i=i/16) {
-			result = symbols[i%16] + result;
-		}
-		return result;
 	}
 	
 	// Note: method works up to a maximum base of 36, otherwise method will be
