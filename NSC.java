@@ -24,45 +24,8 @@ public class NSC {
 	 "A", "B", "C", "D", "E", "F", "G", "H", "I", "J",
 	 "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", 
 	 "U", "V", "W", "X", "Y", "Z"};
-	
-	public static String[] commands = {"base", "help", "exit"};
 	 
 	public static void main (String[] args){	
-		// declarations
-		int number = 0;
-		String numberStr = "";
-		
-		run();
-		/*
-		// input 1
-		System.out.println("");
-		System.out.println("NSC - Number System Converter (Part 1)");
-		System.out.println("Converts decimal numbers to other number systems.");
-		System.out.println("");
-		System.out.print("Number: ");
-		number = sc.nextInt();
-		
-		// output 1
-		System.out.println("Binary: " + decToAny(number, 2));
-		System.out.println("Octal : " + decToAny(number, 8));
-		System.out.println("Hexal : " + decToAny(number, 16));
-		System.out.println(vBase + "'er : " + decToAny(number, vBase));
-		System.out.println("");
-		
-		// input 2
-		System.out.println("NSC - Number System Converter (Part 2)");
-		System.out.println("Converts numbers from a chooseable number system to decimal.");
-		System.out.println("");
-		System.out.print("Number : ");
-		numberStr = sc.next();
-		System.out.print("[base] : ");
-		srcBase = sc.nextInt();
-		
-		// output 2
-		System.out.println("Decimal: " + anyToDec(numberStr, srcBase));	*/
-	}
-	
-	public static void run() {
 		String[] command = {};
 		while (running == true) {
 			System.out.print("NSC[" + srcBase +"]> ");
@@ -78,10 +41,7 @@ public class NSC {
 			} else if (command[0].equals("help")) {
 				// TO DO: print help
 			} else {
-				int x = parseInteger(command[0]);
-				if (x>=0) {
-					printResults(x);
-				}
+				printResults(command[0]);
 			}
 		}
 	}
@@ -108,12 +68,21 @@ public class NSC {
 		}
 	}
 	
-	public static void printResults(int var) {
-		System.out.printf("[%2s]: %8s\n", "2", decToAny(var, 2));
-		System.out.printf("[%2s]: %8s\n", "8", decToAny(var, 8));
-		System.out.printf("[%2s]: %8s\n", "16", decToAny(var, 16));
-		System.out.printf("[%2s]: %8s\n", vBase, decToAny(var, vBase));
-		System.out.println("");
+	public static void printResults(String var) {
+		int decNumber = anyToDec(var, srcBase);
+		if (decNumber<0) {
+			decNumber = -1 * decNumber;
+			System.out.println("err: invalid digit-symbol " + var.charAt(decNumber));
+			System.out.println(var);
+			System.out.printf("%" + (decNumber+1) + "s\n", "^");
+		} else {
+			System.out.printf("[%2s]: %8s\n", "2", decToAny(decNumber, 2));
+			System.out.printf("[%2s]: %8s\n", "8", decToAny(decNumber, 8));
+			System.out.printf("[%2s]: %8s\n", "10", decToAny(decNumber, 10));
+			System.out.printf("[%2s]: %8s\n", "16", decToAny(decNumber, 16));
+			System.out.printf("[%2s]: %8s\n", vBase, decToAny(decNumber, vBase));
+			System.out.println("");
+		}
 	}
 	
 	public static int parseInteger(String s) {
@@ -126,18 +95,18 @@ public class NSC {
 		return result;
 	}
 	
-	public static String anyToDec(String n, int sourceBase) {
+	public static int anyToDec(String n, int sourceBase) {
 		char[] chNumber = n.toCharArray();
 		int result = 0;
 		int digit = 0;
 		for (int i=0; i<chNumber.length; i++) {
 			if ((digit = Character.getNumericValue(chNumber[i])) >= sourceBase) {
-				result = -1;
+				result = -i;
 				break;
 			}
 			result += digit * Math.pow(sourceBase, chNumber.length-1-i);
 		}
-		return String.valueOf(result);
+		return result;
 	}
 	
 	// Note: method works up to a maximum base of 36, otherwise method will be
