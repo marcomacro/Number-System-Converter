@@ -25,21 +25,21 @@ public class NSC {
 	 "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", 
 	 "U", "V", "W", "X", "Y", "Z"};
 	 
-	public static void main (String[] args){	
+	public static void main (String[] args) {	
 		String[] command = {};
 		while (running == true) {
 			System.out.print("NSC[" + srcBase +"]> ");
 			command = sc.nextLine().split(" ");
 			if (command[0].equals("exit")) {
 				running = false;
-			} else if (command[0].equals("base")) {
+			} else if (command[0].equals("base") || command[0].equals("targetBase")) {
 				processBase(command);
-			} else if (command[0].equals("targetBase")) {
-				processTargetBase(command);
 			} else if (command[0].equals("symbols")) {
 				// TO DO: print symbolTable
+				System.out.println("info: 'symbols' not implemented yet.")
 			} else if (command[0].equals("help")) {
 				// TO DO: print help
+				System.out.println("info: 'help' not implemented yet.")
 			} else {
 				printResults(command[0]);
 			}
@@ -48,22 +48,21 @@ public class NSC {
 	
 	public static void processBase(String[] params) {
 		if (params.length==1) {
-			System.out.println("base: " + srcBase);
-		} else {
-			int x = parseInteger(params[1]);
-			if (x>=0) {
-				srcBase = x;
+			if (params[0].equals("base")) {
+				System.out.println("base: " + srcBase);
+			} else if (params[0].equals("targetBase")) {
+				System.out.println("targetBase: " + vBase);
 			}
-		}
-	}
-	
-	public static void processTargetBase(String[] params) {
-		if (params.length==1) {
-			System.out.println("targetBase: " + vBase);
-		} else {
+		} else if (params.length==2) {
 			int x = parseInteger(params[1]);
-			if (x>=0) {
-				vBase = x;
+			if (params[0].equals("base")) {
+				if (x>=0) {
+					srcBase = x;
+				}
+			} else if (params[0].equals("targetBase")) {
+				if (x>=0) {
+					vBase = x;
+				}
 			}
 		}
 	}
@@ -118,5 +117,4 @@ public class NSC {
 		}
 		return result;
 	}
-
 }
